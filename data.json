@@ -1,72 +1,8 @@
 {
   "themes": [
-    {
-      "id": "f545",
-      "title": "тект"
-    },
-    {
-      "id": "84cf",
-      "title": "укваувца"
-    },
-    {
-      "id": "f1c1",
-      "title": "ывас"
-    },
-    {
-      "id": "8c1d",
-      "title": "вас"
-    },
-    {
-      "id": "9d15",
-      "title": "асывса"
-    },
-    {
-      "id": "a5b3",
-      "title": "сауы"
-    }
+    
   ],
   "posts": [
-    {
-      "id": "f58d",
-      "themeId": "f545",
-      "title": "wedf",
-      "content": "wefcdsfe"
-    },
-    {
-      "id": "37e0",
-      "themeId": "f545",
-      "title": "2йуы",
-      "content": "цйвцвувц"
-    },
-    {
-      "id": "07de",
-      "themeId": "84cf",
-      "title": "цвасцв",
-      "content": "асцвас"
-    },
-    {
-      "id": "bec7",
-      "themeId": "84cf",
-      "title": "выафс",
-      "content": "вфыса"
-    },
-    {
-      "id": "ed0c",
-      "themeId": "f545",
-      "title": "wecf",
-      "content": "ewf"
-    },
-    {
-      "id": "6214",
-      "themeId": "f545",
-      "title": "wecf",
-      "content": "wefc"
-    },
-    {
-      "id": "95d5",
-      "themeId": "9d15",
-      "title": "wq2dse",
-      "content": "wqde"
-    }
+    
   ]
 }

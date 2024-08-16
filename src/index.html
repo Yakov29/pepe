@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Темы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px;
+        }
+        header {
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        footer {
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .form-container, .themes-container, .search-container {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-container button:hover {
+            background-color: #218838;
+        }
+
+        .themes-container .theme {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .theme h3 {
+            margin: 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .modal-content button {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .notification {
+            color: #e74c3c;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Медиазапросы для адаптивности */
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container input[type="text"] {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+
+            .search-container button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header, footer {
+                padding: 10px;
+            }
+
+            .form-container, .search-container, .themes-container {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .search-container input[type="text"] {
+                font-size: 14px;
+            }
+
+            .search-container button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .theme {
+                padding: 8px;
+            }
+
+            .modal-content {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .modal-content h2 {
+                font-size: 18px;
+            }
+
+            .modal-content button {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Темы</h1>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <button onclick="openModal('themeModal')">Создать новую тему</button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Поиск по темам">
+            <button onclick="searchThemes()">Поиск</button>
+        </div>
+
+        <div class="themes-container" id="themes">
+            <!-- Здесь будут отображаться темы -->
+        </div>
+
+        <div class="notification" id="notification" style="display: none;">
+            Ничего не найдено
+        </div>
+
+        <div class="modal" id="themeModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('themeModal')">&times;</span>
+                <h2>Создать новую тему</h2>
+                <input type="text" id="themeTitle" placeholder="Название темы" required>
+                <button onclick="createTheme()">Создать тему</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <a href="./posts.html">df</a>
+        <p>&copy; 2024 Posts</p>
+    </footer>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function createTheme() {
+            const themeTitle = document.getElementById('themeTitle').value;
+
+            if (!themeTitle) {
+                alert("Пожалуйста, введите название темы");
+                return;
+            }
+
+            const themeData = { title: themeTitle };
+
+            fetch('http://localhost:3000/themes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(themeData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayTheme(data);
+                document.getElementById('themeTitle').value = '';
+                closeModal('themeModal');
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert("Ошибка при создании темы");
+            });
+        }
+
+        function displayTheme(theme) {
+            const themesContainer = document.getElementById('themes');
+            const themeElement = document.createElement('div');
+            themeElement.classList.add('theme');
+            themeElement.innerHTML = `<h3 onclick="window.location.href='./posts.html?themeId=${theme.id}'">${theme.title}</h3>`;
+            themesContainer.appendChild(themeElement);
+        }
+
+        function loadThemes() {
+            fetch('http://localhost:3000/themes')
+                .then(response => response.json())
+                .then(themes => {
+                    themes.forEach(theme => displayTheme(theme));
+                })
+                .catch(error => {
+                    console.error('Ошибка загрузки тем:', error);
+                });
+        }
+
+        function searchThemes() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const themesContainer = document.getElementById('themes');
+            const themes = themesContainer.getElementsByClassName('theme');
+            let found = false;
+
+            for (let i = 0; i < themes.length; i++) {
+                const themeTitle = themes[i].querySelector('h3').innerText.toLowerCase();
+                if (themeTitle.includes(query)) {
+                    themes[i].style.display = '';
+                    found = true;
+                } else {
+                    themes[i].style.display = 'none';
+                }
+            }
+
+            document.getElementById('notification').style.display = found ? 'none' : 'block';
+        }
+
+        window.onload = loadThemes;
+    </script>
+</body>
+</html>

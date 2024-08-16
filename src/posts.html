@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Посты по теме</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            padding-top: 150px;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        main {
+            padding: 70px 20px 60px; /* Учитываем высоту фиксированного хедера и футера */
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        footer {
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .posts-container, .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .posts-container h2, .form-container h2 {
+            margin-top: 0;
+        }
+
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .post {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border-left: 4px solid #28a745;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .post h4 {
+            margin-top: 0;
+        }
+
+        .back-link, .main-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .back-link:hover, .main-link:hover {
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .modal-content input, .modal-content textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal-content .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .modal-content .close:hover {
+            color: #28a745;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Адаптивные стили */
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 95%;
+            }
+
+            .form-container button {
+                width: 100%;
+                padding: 12px;
+            }
+
+            .post {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Посты по теме</h1>
+        <a class="back-link" href="./index.html">Назад на главную</a>
+    </header>
+
+    <main>
+        <div class="posts-container" id="posts">
+            <!-- Здесь будут отображаться посты -->
+        </div>
+
+        <div class="form-container">
+            <button onclick="openModal('postModal')">Создать новый пост</button>
+        </div>
+
+        <div class="modal" id="postModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('postModal')">&times;</span>
+                <h2>Создать новый пост</h2>
+                <input type="text" id="postTitle" placeholder="Заголовок поста" required>
+                <textarea id="postContent" placeholder="Текст поста" rows="4" required></textarea>
+                <button onclick="submitPost()">Отправить пост</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Posts</p>
+    </footer>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function loadPosts() {
+            const themeId = getQueryParam('themeId');
+
+            if (!themeId) {
+                alert("Не удалось получить идентификатор темы");
+                return;
+            }
+
+            fetch(`http://localhost:3000/posts?themeId=${themeId}`)
+                .then(response => response.json())
+                .then(posts => {
+                    const postsContainer = document.getElementById('posts');
+                    postsContainer.innerHTML = '<h2>Посты</h2>';
+                    posts.forEach(post => {
+                        const postElement = document.createElement('div');
+                        postElement.classList.add('post');
+                        postElement.innerHTML = `
+                            <h4>${post.title}</h4>
+                            <p>${post.content}</p>
+                        `;
+                        postsContainer.appendChild(postElement);
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка загрузки постов:', error);
+                });
+        }
+
+        function submitPost() {
+            const themeId = getQueryParam('themeId');
+            const postTitle = document.getElementById('postTitle').value;
+            const postContent = document.getElementById('postContent').value;
+
+            if (!themeId || !postTitle || !postContent) {
+                alert("Пожалуйста, заполните все поля");
+                return;
+            }
+
+            const postData = {
+                themeId: themeId,
+                title: postTitle,
+                content: postContent
+            };
+
+            fetch('http://localhost:3000/posts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(postData)
+            })
+            .then(response => response.json())
+            .then(() => {
+                document.getElementById('postTitle').value = '';
+                document.getElementById('postContent').value = '';
+                loadPosts(); // Перезагружаем посты после добавления
+                closeModal('postModal');
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert("Ошибка при отправке поста");
+            });
+        }
+
+        window.onload = loadPosts;
+    </script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Темы</title>
+    <style>body {
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0 0 50px;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  color: #fff;
+  text-align: center;
+  background-color: #28a745;
+  padding: 10px 0;
+}
+
+footer {
+  color: #fff;
+  text-align: center;
+  z-index: 1000;
+  background-color: #28a745;
+  width: 100%;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+main {
+  padding: 20px;
+}
+
+.form-container, .themes-container, .search-container {
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 4px #0000001a;
+}
+
+.form-container button {
+  color: #fff;
+  cursor: pointer;
+  background-color: #28a745;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+}
+
+.search-container {
+  background-color: #fff;
+  border-radius: 8px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  display: flex;
+  box-shadow: 0 2px 4px #0000001a;
+}
+
+.search-container input[type="text"] {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+  margin-right: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.search-container button {
+  color: #fff;
+  cursor: pointer;
+  background-color: #28a745;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  transition: background-color .3s;
+}
+
+.search-container button:hover {
+  background-color: #218838;
+}
+
+.themes-container .theme {
+  cursor: pointer;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 10px;
+  box-shadow: 0 1px 3px #0000001a;
+}
+
+.theme h3 {
+  margin: 0;
+}
+
+.modal {
+  background: #00000080;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  padding: 20px;
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.modal-content button {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.close {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.notification {
+  color: #e74c3c;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+@media (width <= 768px) {
+  .search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-container input[type="text"] {
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+
+  .search-container button {
+    width: 100%;
+  }
+}
+
+@media (width <= 480px) {
+  header, footer {
+    padding: 10px;
+  }
+
+  .form-container, .search-container, .themes-container {
+    margin-bottom: 15px;
+    padding: 15px;
+  }
+
+  .search-container input[type="text"] {
+    font-size: 14px;
+  }
+
+  .search-container button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .theme {
+    padding: 8px;
+  }
+
+  .modal-content {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+  }
+
+  .modal-content button {
+    padding: 8px 16px;
+  }
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>Темы</h1>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <button onclick="openModal('themeModal')">Создать новую тему</button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Поиск по темам">
+            <button onclick="searchThemes()">Поиск</button>
+        </div>
+
+        <div class="themes-container" id="themes">
+            <!-- Здесь будут отображаться темы -->
+        </div>
+
+        <div class="notification" id="notification" style="display: none">
+            Ничего не найдено
+        </div>
+
+        <div class="modal" id="themeModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('themeModal')">&times;</span>
+                <h2>Создать новую тему</h2>
+                <input type="text" id="themeTitle" placeholder="Название темы" required="">
+                <button onclick="createTheme()">Создать тему</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <a href="/posts.html">df</a>
+        <p>&copy; 2024 Posts</p>
+    </footer>
+
+    <script>function openModal(modalId) {
+    document.getElementById(modalId).style.display = "flex";
+}
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+}
+function createTheme() {
+    const themeTitle = document.getElementById("themeTitle").value;
+    if (!themeTitle) {
+        alert("\u041F\u043E\u0436\u0430\u043B\u0443\u0439\u0441\u0442\u0430, \u0432\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0442\u0435\u043C\u044B");
+        return;
+    }
+    const themeData = {
+        title: themeTitle
+    };
+    fetch("http://localhost:3000/themes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(themeData)
+    }).then((response)=>response.json()).then((data)=>{
+        displayTheme(data);
+        document.getElementById("themeTitle").value = "";
+        closeModal("themeModal");
+    }).catch((error)=>{
+        console.error("\u041E\u0448\u0438\u0431\u043A\u0430:", error);
+        alert("\u041E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u0438 \u0442\u0435\u043C\u044B");
+    });
+}
+function displayTheme(theme) {
+    const themesContainer = document.getElementById("themes");
+    const themeElement = document.createElement("div");
+    themeElement.classList.add("theme");
+    themeElement.innerHTML = `<h3 onclick="window.location.href='./posts.html?themeId=${theme.id}'">${theme.title}</h3>`;
+    themesContainer.appendChild(themeElement);
+}
+function loadThemes() {
+    fetch("http://localhost:3000/themes").then((response)=>response.json()).then((themes)=>{
+        themes.forEach((theme)=>displayTheme(theme));
+    }).catch((error)=>{
+        console.error("\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 \u0442\u0435\u043C:", error);
+    });
+}
+function searchThemes() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const themesContainer = document.getElementById("themes");
+    const themes = themesContainer.getElementsByClassName("theme");
+    let found = false;
+    for(let i = 0; i < themes.length; i++){
+        const themeTitle = themes[i].querySelector("h3").innerText.toLowerCase();
+        if (themeTitle.includes(query)) {
+            themes[i].style.display = "";
+            found = true;
+        } else themes[i].style.display = "none";
+    }
+    document.getElementById("notification").style.display = found ? "none" : "block";
+}
+window.onload = loadThemes;
+
+</script>
+<script src="/pepe.59712999.js"></script></body>
+</html>
